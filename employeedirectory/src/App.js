@@ -4,6 +4,7 @@ import Wrapper from "./components/Wrapper";
 import Title from "./components/Title";
 import friends from "./friends.json";
 import Button from "./components/Button/Button"
+import Form from "./components/FilterForm/Form"
 
 
 class App extends Component {
@@ -81,20 +82,39 @@ class App extends Component {
 
   }
 
+  resetList = () =>{
+
+    this.setState({ friends })
+
+  }
+
+  filterEmploy = filter => {
+
+    const friends = this.state.friends.filter(friend => friend.occupation.toLowerCase().includes(filter.toLowerCase()))
+    this.setState({ friends })
+
+  }
+
 
 
   // Map over this.state.friends and render a FriendCard component for each friend object
   render() {
     return (
       <Wrapper>
+
         <Title>Employees </Title>
+
         <Button  sortFunc = {this.sortFunc} sort = "name" order = "asc">Sort by Name Asc</Button>
         <Button  sortFunc = {this.sortFunc} sort = "name" order = "desc">Sort by Name Desc</Button>
         <Button  sortFunc = {this.sortFunc} sort = "job" order = "asc">Sort by Occupation Asc</Button>
         <Button  sortFunc = {this.sortFunc} sort = "job" order = "desc">Sort by Occupation Desc</Button>
         
-      
+        <Form filterEmploy = {this.filterEmploy}></Form>
+
+        <button  onClick ={() => {this.resetList()}}>Reset List</button>
+
         <Wrapper>
+
         {this.state.friends.map(friend => (
           <FriendCard
             removeFriend={this.removeFriend}
@@ -106,6 +126,7 @@ class App extends Component {
             location={friend.location}
           />
         ))}
+
         </Wrapper>
 
       </Wrapper>
